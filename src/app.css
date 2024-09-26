@@ -71,7 +71,10 @@
 @layer base {
   * {
     @apply border-border;
+    font-family: "Montserrat", sans-serif;
+    @apply selection:bg-tvblue selection:text-white;
   }
+
   body {
     @apply bg-background text-foreground;
   }
