@@ -46,7 +46,6 @@ export async function GET({ params }) {
       };
       const response = await fetch(url, options);
       const data = await response.json();
-      console.log(data);
       const numberId: string = data.data.data.numberId._serialized;
 
       if (response.ok) {
