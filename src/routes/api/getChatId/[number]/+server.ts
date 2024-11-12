@@ -16,7 +16,7 @@ export async function GET({ params }) {
 
   if (number) {
     try {
-      const url = `https://waapi.app/api/v1/instances/${WAAPI_CLIENT}/client/action/get-number-id`;
+      const url = `https://waapi.app/api/v1/instances/id/${WAAPI_CLIENT}/action/get-number-id`;
       const options = {
         method: "POST",
         headers: {

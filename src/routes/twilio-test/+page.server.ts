@@ -13,7 +13,7 @@ export const actions: Actions = {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          chatId: formData.number + "@c.us",
+          chatId: formData.number,
           message: formData.text || "",
         }),
       });
