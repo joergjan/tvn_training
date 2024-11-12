@@ -16,7 +16,7 @@ export async function GET({ params }) {
 
   if (number) {
     try {
-      const url = `https://waapi.app/api/v1/instances/id/${WAAPI_CLIENT}/action/get-number-id`;
+      const url = `https://waapi.app/api/v1/instances/${WAAPI_CLIENT}/client/action/get-number-id`;
       const options = {
         method: "POST",
         headers: {
@@ -29,9 +29,14 @@ export async function GET({ params }) {
         }),
       };
       const response = await fetch(url, options);
-      console.log(await response.json());
+      const data = await response.json();
+      const numberId: string = data.data.data.numberId._serialized;
 
-      return json("success", { status: 201 });
+      if (response.ok) {
+        return json(numberId, { status: response.status });
+      } else {
+        return json(numberId, { status: response.status });
+      }
     } catch (e) {
       return json("failed to send Message", { status: 500 });
     }

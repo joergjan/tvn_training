@@ -1,18 +1,19 @@
 import { fail } from "@sveltejs/kit";
 import type { Actions } from "./$types";
+import { dev } from "$app/environment";
 
 export const actions: Actions = {
-  sendMessage: async ({ request }) => {
+  sendMessage: async ({ request, url }) => {
     try {
       const formData = Object.fromEntries(await request.formData());
 
-      const response = await fetch("http://localhost:5173/api/sendMessage", {
+      const response = await fetch(`${url.origin}/api/sendMessage`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          chatId: "41774574801@c.us",
+          chatId: formData.number + "@c.us",
           message: formData.text || "",
         }),
       });
@@ -23,12 +24,12 @@ export const actions: Actions = {
       return fail(500, { message: "Failed to send Message" });
     }
   },
-  getChatId: async ({ request }) => {
+  getChatId: async ({ request, url }) => {
     try {
       const formData = Object.fromEntries(await request.formData());
 
       const response = await fetch(
-        `http://localhost:5173/api/getChatId/${formData.number}`,
+        `${url.origin}/api/getChatId/${formData.number}`,
         {
           method: "GET",
           headers: {
@@ -36,8 +37,9 @@ export const actions: Actions = {
           },
         }
       );
+      const data = await response.json();
 
-      return { status: 200 };
+      return { status: 200, data };
     } catch (e) {
       console.log(e);
       return fail(500, { message: "Failed to send Message" });
