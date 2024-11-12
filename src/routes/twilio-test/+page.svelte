@@ -8,7 +8,30 @@
 
 <div class="space-y-5">
   <h2>Send Message</h2>
-  <form action="?/sendMessage" class="" method="POST" use:enhance>
+  <form
+    action="?/sendMessage"
+    class=""
+    method="POST"
+    use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+      // `formElement` is this `<form>` element
+      // `formData` is its `FormData` object that's about to be submitted
+      // `action` is the URL to which the form is posted
+      // calling `cancel()` will prevent the submission
+      // `submitter` is the `HTMLElement` that caused the form to be submitted
+
+      return async ({ result, update }) => {
+        if (result.type === "success") {
+          formElement.reset();
+          invalidateAll();
+        } else {
+          invalidateAll();
+          formElement.reset();
+        }
+        // `result` is an `ActionResult` object
+        // `update` is a function which triggers the default logic that would be triggered if this callback wasn't set
+      };
+    }}
+  >
     <div class="space-y-3">
       <div class="md:flex md:space-x-2">
         <div class="w-full">
