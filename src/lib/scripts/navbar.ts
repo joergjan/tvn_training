@@ -1,7 +1,7 @@
 export const titles = [
   {
-    name: "twilio-test",
-    href: "/twilio-test",
+    name: "waapi",
+    href: "/waapi",
     title: "TV Nussbaumen",
   },
 ];
