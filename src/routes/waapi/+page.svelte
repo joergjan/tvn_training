@@ -52,7 +52,7 @@
           </div>
           <div class="w-full">
             <label for="text">Id</label>
-            <input type="text" name="number" bind:value={numberId} />
+            <input type="text" name="number" bind:value={numberId} disabled />
           </div>
         </div>
         <br />
