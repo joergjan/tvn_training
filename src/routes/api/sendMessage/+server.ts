@@ -17,6 +17,8 @@ export async function POST({ request, params }) {
   const message = body.message;
   const chatId = body.chatId;
 
+  console.log(message, chatId);
+
   if (message && chatId) {
     try {
       const url = `https://waapi.app/api/v1/instances/${WAAPI_CLIENT}/client/action/send-message`;
@@ -33,6 +35,8 @@ export async function POST({ request, params }) {
         }),
       };
       const response = await fetch(url, options);
+
+      console.log(response);
 
       return json("success", { status: 201 });
     } catch (e) {

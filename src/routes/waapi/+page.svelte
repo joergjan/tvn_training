@@ -5,13 +5,13 @@
   import { cubicOut } from "svelte/easing";
   import { fly } from "svelte/transition";
 
-  let numberId: string;
+  let chatId: string;
   let showError: boolean = false;
   let showSuccess: boolean = false;
 </script>
 
 <div class="space-y-5">
-  {#if numberId}
+  {#if chatId}
     <h2>Whatsapp Nachricht versenden</h2>
 
     <form
@@ -39,6 +39,7 @@
             showSuccess = false;
             showError = false;
           }, 3500);
+          chatId = "";
           // `result` is an `ActionResult` object
           // `update` is a function which triggers the default logic that would be triggered if this callback wasn't set
         };
@@ -48,11 +49,11 @@
         <div class="md:flex md:space-x-2">
           <div class="w-full">
             <label for="text">Nachricht</label>
-            <input type="text" name="text" />
+            <input type="text" name="message" />
           </div>
           <div class="w-full">
             <label for="text">Id</label>
-            <input type="text" name="number" bind:value={numberId} disabled />
+            <input type="text" name="chatId" bind:value={chatId} />
           </div>
         </div>
         <br />
@@ -66,7 +67,7 @@
     </form>
   {/if}
 
-  {#if !numberId}
+  {#if !chatId}
     <h2>Gib deine Handynummer ein</h2>
 
     <form
@@ -82,7 +83,7 @@
 
         return async ({ result, update }) => {
           if (result.type === "success") {
-            numberId = String(await result.data.data);
+            chatId = String(await result.data.data);
             formElement.reset();
 
             invalidateAll();

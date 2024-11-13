@@ -48,11 +48,7 @@ export async function GET({ params }) {
       const data = await response.json();
       const numberId: string = data.data.data.numberId._serialized;
 
-      if (response.ok) {
-        return json(numberId, { status: response.status });
-      } else {
-        return json(numberId, { status: response.status });
-      }
+      return json(numberId, { status: response.status });
     } catch (e) {
       return json("failed to send Message", { status: 500 });
     }
