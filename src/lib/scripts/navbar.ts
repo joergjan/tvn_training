@@ -1,7 +1,7 @@
 export const titles = [
   {
     name: "waapi",
-    href: "/waapi",
+    href: "/private/waapi",
     title: "TV Nussbaumen",
   },
 ];

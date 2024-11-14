@@ -169,24 +169,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  input[type="text"],
-  input[type="number"],
-  textarea {
-    @apply w-full;
-  }
-
-  select,
-  input,
-  textarea {
-    @apply border-2 rounded-md py-1 px-2 border-gray-200 shadow-sm;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"] {
-    @apply py-1 h-10;
-  }
-</style>

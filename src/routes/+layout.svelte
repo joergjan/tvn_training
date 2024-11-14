@@ -3,10 +3,12 @@
   import "../fonts.css";
   import { currentPage, darkMode } from "$lib/scripts/stores";
   import { titles } from "$lib/scripts/navbar";
-
   import { fade } from "svelte/transition";
-
   import { onMount } from "svelte";
+  import { invalidate } from "$app/navigation";
+
+  export let data;
+  $: ({ session, supabase } = data);
 
   let open = false;
   $: dark = $darkMode;
@@ -33,6 +35,14 @@
         pageHref = pageHref;
       }
     }
+
+    const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
+      if (newSession?.expires_at !== session?.expires_at) {
+        invalidate("supabase:auth");
+      }
+    });
+
+    return () => data.subscription.unsubscribe();
   });
 
   function changeDarkMode() {
