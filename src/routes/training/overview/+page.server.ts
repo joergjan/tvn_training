@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({
 
   const { data: profiles } = await supabase
     .from("profiles")
-    .select(`full_name, username, trainings_profiles ( trainings ( day ) )`);
+    .select(`full_name, username, trainings_profiles ( trainings ( id ) )`);
 
   return { session, trainings, profiles };
 };

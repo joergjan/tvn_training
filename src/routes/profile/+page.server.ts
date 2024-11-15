@@ -12,9 +12,16 @@ export const load: PageServerLoad = async ({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select()
+    .select(
+      `full_name, username, avatar_url, trainings_profiles ( trainings ( id ) )`
+    )
     .eq("id", session.user.id)
     .single();
+
+  const { data: trainings } = await supabase
+    .from("trainings")
+    .select()
+    .order("day", { ascending: true });
 
   return { session, profile };
 };
