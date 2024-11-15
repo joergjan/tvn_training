@@ -6,11 +6,15 @@
   import { fade } from "svelte/transition";
   import { onMount } from "svelte";
   import { invalidate } from "$app/navigation";
+  import { enhance } from "$app/forms";
 
   export let data;
-  $: ({ session, supabase } = data);
 
-  let open = false;
+  let { supabase, session } = data;
+  $: ({ supabase, session } = data);
+
+  let loading: boolean = false;
+  let open: boolean = false;
   $: dark = $darkMode;
 
   let current: "cross" | "burger" = "burger";
@@ -50,6 +54,16 @@
       $darkMode = false;
     } else {
       $darkMode = true;
+    }
+  }
+
+  async function logout() {
+    const response = await fetch("/logout", { method: "POST" });
+
+    if (response.ok) {
+      window.location.href = "/";
+    } else {
+      console.error("Logout failed");
     }
   }
 </script>
@@ -110,6 +124,11 @@
 					</svg>
 				</button>
 				-->
+        <div>
+          <button class="group" on:click={logout}>
+            <p class="group-hover:scale-105">Logout</p>
+          </button>
+        </div>
       </div>
 
       <div class="-mr-2 flex items-center md:hidden gap-4">
@@ -176,6 +195,11 @@
             on:click={() => ($currentPage = i)}>{title.name}</a
           >
         {/each}
+        <div>
+          <button class="group" on:click={logout}>
+            <p class="group-hover:scale-105">Logout</p>
+          </button>
+        </div>
       </div>
       <div class="px-4 pt-5 flex space-x-10">
         <a

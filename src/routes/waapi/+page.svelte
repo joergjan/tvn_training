@@ -57,11 +57,8 @@
           </div>
         </div>
         <br />
-        <button
-          class="px-3 py-2 bg-blue-300 rounded-md shadow-md"
-          type="submit"
-        >
-          senden
+        <button class="group" type="submit">
+          <p class="group-hover:scale-105">senden</p>
         </button>
       </div>
     </form>
@@ -100,11 +97,8 @@
         <label for="number">Nummer</label>
         <input type="tel" name="number" autocomplete="tel" />
         <br />
-        <button
-          class="px-3 py-2 bg-blue-300 rounded-md shadow-md"
-          type="submit"
-        >
-          absenden
+        <button class="group" type="submit">
+          <p class="group-hover:scale-105">senden</p>
         </button>
       </div>
     </form>
