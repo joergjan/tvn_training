@@ -1,5 +1,26 @@
-<script>
+<script lang="ts">
+  export let data;
+
+  let { session, supabase, trainings, profiles } = data;
+  $: ({ session, supabase, trainings, profiles } = data);
+
+  function getWeekday(dateString: string) {
+    const daysOfWeek = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+    const dayIndex = new Date(dateString).getDay();
+    return daysOfWeek[dayIndex];
+  }
+
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0"); // Get day and pad with leading zero if needed
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (getMonth() returns 0-11, so add 1)
+    // const year = date.getFullYear(); // Get full year
+
+    return `${day}.${month}.`; //.${year}
+  }
 </script>
+
+<div class="flex"></div>
 
 <div class="px-4 sm:px-6 lg:px-8">
   <div class="sm:flex sm:items-center">
@@ -23,63 +44,31 @@
       <div class="inline-block min-w-full py-2 align-middle">
         <table class="min-w-full border-separate border-spacing-0">
           <thead>
-            <tr>
-              <th
-                scope="col"
-                class="sticky top-0 z-10 border-b border-gray-300 bg-white/75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
-                >Name</th
-              >
-              <th
-                scope="col"
-                class="sticky top-0 z-10 hidden border-b border-gray-300 bg-white/75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
-                >Title</th
-              >
-              <th
-                scope="col"
-                class="sticky top-0 z-10 hidden border-b border-gray-300 bg-white/75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter lg:table-cell"
-                >Email</th
-              >
-              <th
-                scope="col"
-                class="sticky top-0 z-10 border-b border-gray-300 bg-white/75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                >Role</th
-              >
-              <th
-                scope="col"
-                class="sticky top-0 z-10 border-b border-gray-300 bg-white/75 py-3.5 pl-3 pr-4 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
-              >
-                <span class="sr-only">Edit</span>
-              </th>
+            <tr class="h-10 text-xs">
+              <th></th>
+              {#each trainings as training}
+                <th class="-rotate-45">
+                  {getWeekday(training?.day)}, {formatDate(training?.day)}
+                </th>
+              {/each}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td
-                class="whitespace-nowrap border-b border-gray-200 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8"
-                >Lindsay Walton</td
-              >
-              <td
-                class="hidden whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500 sm:table-cell"
-                >Front-end Developer</td
-              >
-              <td
-                class="hidden whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500 lg:table-cell"
-                >lindsay.walton@example.com</td
-              >
-              <td
-                class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500"
-                >Member</td
-              >
-              <td
-                class="relative whitespace-nowrap border-b border-gray-200 py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-8 lg:pr-8"
-              >
-                <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                  >Edit<span class="sr-only">, Lindsay Walton</span></a
-                >
-              </td>
-            </tr>
-
-            <!-- More people... -->
+            {#each profiles as profile}
+              <tr>
+                <td>
+                  {profile?.full_name}
+                  {profile?.username}
+                </td>
+                {#each trainings as training, i}
+                  {#each profile?.trainings_profiles as training_profile}
+                    {#if training_profile?.trainings?.day == training?.day}
+                      <td>X</td>
+                    {/if}
+                  {/each}
+                {/each}
+              </tr>
+            {/each}
           </tbody>
         </table>
       </div>
