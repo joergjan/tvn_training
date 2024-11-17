@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({
     .select()
     .order("day", { ascending: true });
 
-  return { session, profile };
+  return { session, profile, trainings };
 };
 
 export const actions: Actions = {
