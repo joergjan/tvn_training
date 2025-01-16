@@ -28,6 +28,8 @@ export async function GET({ params }) {
   }
   */
 
+  console.log("test");
+
   const number = formatSwissPhoneNumber(params.number);
 
   if (number) {
@@ -47,6 +49,8 @@ export async function GET({ params }) {
       const response = await fetch(url, options);
       const data = await response.json();
       const numberId: string = data.data.data.numberId._serialized;
+
+      console.log(numberId);
 
       return json(numberId, { status: response.status });
     } catch (e) {

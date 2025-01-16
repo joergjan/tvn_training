@@ -2,38 +2,37 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import type { ActionData, SubmitFunction } from "./$types.js";
-
-  export let form: ActionData;
-
+  import Message from "$lib/components/Message.svelte";
+  import Loader from "$lib/components/Loader.svelte";
+  let messageComponent;
   let loading = false;
 
-  const handleSubmit: SubmitFunction = () => {
-    loading = true;
-    return async ({ update }) => {
-      update();
-      loading = false;
-    };
-  };
+  export let form: ActionData;
 </script>
 
 <svelte:head>
   <title>User Management</title>
 </svelte:head>
 
+<Message bind:this={messageComponent} />
+
 <form
   class="row flex flex-center"
   method="POST"
-  use:enhance={handleSubmit}
+  use:enhance={({}) => {
+    loading = true;
+    return async ({ result, update }) => {
+      update();
+      messageComponent.showMessage(result);
+      loading = false;
+    };
+  }}
   action="?/login"
 >
   <div class="col-6 form-widget">
     <h1 class="header">Supabase + SvelteKit</h1>
     <p class="description">Sign in via magic link with your email below</p>
-    {#if form?.message !== undefined}
-      <div class="success {form?.success ? '' : 'fail'}">
-        {form?.message}
-      </div>
-    {/if}
+
     <label>
       Email
       <input name="email" type="email" />
@@ -49,12 +48,8 @@
       </span>
     {/if}
     <div>
-      <button class="button primary block">
-        {loading ? "lädt ..." : "Login"}
-      </button>
-      <button formaction="?/signup"
-        >{loading ? "lädt ..." : "Registrieren"}</button
-      >
+      <button class="button primary block"> Login </button>
+      <button formaction="?/signup">Registrieren</button>
     </div>
   </div>
 </form>

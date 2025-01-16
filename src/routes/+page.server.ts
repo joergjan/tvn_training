@@ -24,8 +24,7 @@ export const actions: Actions = {
 
     const { error } = await supabase.auth.signUp({ email, password });
     if (error) {
-      console.error(error);
-      redirect(303, "/auth/error");
+      return fail(400, { message: error.message });
     } else {
       redirect(303, "/");
     }
@@ -37,8 +36,7 @@ export const actions: Actions = {
 
     if (!validEmail) {
       return fail(400, {
-        errors: { email: "Please enter a valid email address" },
-        email,
+        message: "Please enter a valid email address",
       });
     }
     const password = formData.get("password") as string;
@@ -48,8 +46,7 @@ export const actions: Actions = {
       password,
     });
     if (error) {
-      console.error(error);
-      redirect(303, "/auth/error");
+      return fail(400, { message: error.message });
     } else {
       redirect(303, "/profile");
     }

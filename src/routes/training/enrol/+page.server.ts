@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({
   const { data: trainings } = await supabase
     .from("trainings")
     .select()
-    .gte("day", new Date().toISOString().split("T")[0])
+    // .gte("day", new Date().toISOString().split("T")[0])
     .order("day", { ascending: true });
 
   return { session, profile, trainings };
@@ -40,14 +40,10 @@ export const actions: Actions = {
     });
 
     if (error) {
-      return fail(500, {
-        training_id,
-      });
+      return fail(400, { message: error.message });
     }
 
-    return {
-      training_id,
-    };
+    return { success: true, message: "Einschreibung erfolgreich" };
   },
   unenrol: async ({ request, locals: { supabase, safeGetSession } }) => {
     const formData = await request.formData();
@@ -63,13 +59,9 @@ export const actions: Actions = {
       .eq("id", trainings_profiles_id);
 
     if (error) {
-      return fail(500, {
-        trainings_profiles_id,
-      });
+      return fail(400, { message: error.message });
     }
 
-    return {
-      trainings_profiles_id,
-    };
+    return { success: true, message: "Ausschreibung erfolgreich" };
   },
 };

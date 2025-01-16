@@ -3,11 +3,15 @@
   import { formatDate } from "$lib/functions/formatDate";
   import { getWeekday } from "$lib/functions/getWeekday";
   import { fromStore } from "svelte/store";
+  import Message from "$lib/components/Message.svelte";
+  import Loader from "$lib/components/Loader.svelte";
 
   export let data;
 
   $: ({ session, supabase, trainings, profile } = data);
 
+  let messageComponent;
+  let loading = false;
   let enrollments: { check: boolean; id: string }[] = [];
 
   $: {
@@ -32,8 +36,20 @@
   }
 </script>
 
+<Message bind:this={messageComponent} />
+
 {#each trainings as training, i}
-  <form action="?/enrol" method="POST" use:enhance>
+  <form
+    action="?/enrol"
+    method="POST"
+    use:enhance={({}) => {
+      loading = true;
+      return async ({ result }) => {
+        messageComponent.showMessage(result);
+        loading = false;
+      };
+    }}
+  >
     <div class="flex">
       <p>
         {getWeekday(training?.day)}, {formatDate(training?.day)}
